@@ -32,11 +32,27 @@ vim.keymap.set("n", "<Leader>x", function()
 end)
 ```
 
+![screencapture.png](screencapture.png)
+
 ## History files
 
 History is stored in `~/.config/nvim/history/` with the file name given as option `history_file`.
+They are just lua code that is loaded with a sandboxed lua interpreter.
+
+```lua
+return {
+    ["DEFAULT"] = {
+        [1] = "one",
+        [2] = "two",
+        [3] = "three",
+        [4] = "four",
+        [5] = "five",
+        [6] = "six",
+    },
+}
+```
 
 ## TODO
 
 - [ ] use `string.dump()` for serialization
-- [ ] better documentaiton, examples of overrides
+- [ ] better documentation, examples of overrides, selecting different history_groups, etc
