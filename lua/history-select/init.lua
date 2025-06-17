@@ -1,5 +1,5 @@
 -- this dialog box uses the telescope UI to ask for free text
--- entry, providng the user an option to 
+-- entry, providng the user an option to
 
 M = {}
 
@@ -39,6 +39,13 @@ M.defaults = {
 
     -- add item to history (write file, if history_file is set)
     add_to_history = function(self, txt)
+        if not self.history_group then
+            error("no history_group set")
+        end
+        if not self.history[self.history_group] then
+            print("history not initialized for history_group=" .. self.history_group)
+            self.history[self.history_group] = {}
+        end
         table.insert(self.history[self.history_group], txt)
         self:write_history_file()
     end,
@@ -67,7 +74,7 @@ M.defaults = {
         local sandbox_env = {}
         local func,err = loadfile(file_path, "t", sandbox_env)
         if func == nil then
-            error(err)
+            error("while loading `" .. file_path .. "`: " .. err)
         end
 
         -- evaluate the result in sandbox
