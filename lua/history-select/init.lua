@@ -70,22 +70,22 @@ M.defaults = {
             return
         end
 
-        -- deserialize file
-        local sandbox_env = {}
-        local func,err = loadfile(file_path, "t", sandbox_env)
+        -- Load the file using loadfile(), which in Lua 5.1 takes only the file path
+        local func, err = loadfile(file_path)
         if func == nil then
             error("while loading `" .. file_path .. "`: " .. err)
         end
 
-        -- evaluate the result in sandbox
-        local obj = nil
-        do
-            local _env = _ENV
-            _ENV = sandbox_env
-            obj = func()
-            _ENV = _env
-        end
+        -- Create a sandbox environment
+        local sandbox_env = {}
 
+        -- Set the environment of the loaded function to the sandbox
+        setfenv(func, sandbox_env)
+
+        -- Execute the function to get the returned table
+        local obj = func()
+
+        -- Assign the returned table to self.history if it's not nil
         if obj ~= nil then
             self.history = obj
         end
